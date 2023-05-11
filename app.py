@@ -16,6 +16,7 @@ def main():
     except Exception as e:
         print("Ocorreu um erro inesperado: ", e)
 
+main()
 # # agendar a execução da função todos os dias às 9 da manhã
 # schedule.every().day.at("04:00").do(main())
 

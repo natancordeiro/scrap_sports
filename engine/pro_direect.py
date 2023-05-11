@@ -370,9 +370,16 @@ class ProDirect(Browser):
 
                 # Descrição
                 self.wdw.until(partial(self.esperar_elemento, By.CSS_SELECTOR, 'div[class="ml-tab-content__copy"]'))
+                self.wdw.until(partial(self.esperar_elemento, By.CSS_SELECTOR, 'button[data-id="1557958961"]'))
+
+                try:
+                    self.driver.find_element(By.CSS_SELECTOR, 'button[data-id="1557958961"]').click()
+                    sleep(0.5)
+                except:
+                    pass
+
                 description = self.driver.find_element(By.CSS_SELECTOR, 'div[class="ml-tab-content__copy"]').text
-                if description == '':
-                    description = self.driver.find_element(By.XPATH, '//p[1]').text
+                
                 descricao = self.tradutor(description)
                 descricao = descricao.replace('bota', 'chuteira').replace('botas', 'chuteiras').replace('Bota', 'Chuteira').replace('Botas', 'Chuteiras')
 
