@@ -110,5 +110,3 @@ def get():
 
     for n, product in enumerate(wcapi.get("products").json()):
             print(product['attributes'])
-
-get()
