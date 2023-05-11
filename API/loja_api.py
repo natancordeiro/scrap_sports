@@ -40,7 +40,7 @@ def create_product(name, marca, sku, description, price, regular_price, sale_pri
                 "position": 0,
                 "visible": False,
                 "variation": True,
-                "options": 'BR ' + sizes
+                "options": sizes
             },  
             {
                 "id": 1,
