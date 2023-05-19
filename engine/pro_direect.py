@@ -1,5 +1,4 @@
 from engine.browser import *
-from API.loja_api import *
 
 from googletrans import Translator
 from bs4 import BeautifulSoup
@@ -307,7 +306,7 @@ class ProDirect(Browser):
 
     def scraping_chuteiras(self, inicial_page= int, total_pages=int):
         print("iniciando raspagem de dados.")
-        dados = {}
+        dados = []
 
         # Abrir página
         self.driver.get(self.base_url + "&pg=" + str(inicial_page))
@@ -330,6 +329,7 @@ class ProDirect(Browser):
   
             # Para cadachuteira na página, entrar e extrair os dados
             for chuteira in range(0, len(chuteiras)):
+                dados_chuteira = []
 
                 # Pegar dados das chuteiras
                 div_chuteiras = self.driver.find_element(By.CSS_SELECTOR, 'div[class="lister-grid__content"]')
@@ -379,10 +379,8 @@ class ProDirect(Browser):
                     pass
 
                 description = self.driver.find_element(By.CSS_SELECTOR, 'div[class="ml-tab-content__copy"]').text
-                
                 descricao = self.tradutor(description)
                 descricao = descricao.replace('bota', 'chuteira').replace('botas', 'chuteiras').replace('Bota', 'Chuteira').replace('Botas', 'Chuteiras')
-
 
                 # Guardando variavel Features
                 aba_features = self.driver.find_element(By.CSS_SELECTOR, 'button[data-id="218547736"]')
@@ -433,16 +431,13 @@ class ProDirect(Browser):
 
                 # Postando na loja
                 imgs = self.scrap_images()
-                create_product(name=titulo_produto, 
-                               marca=marca, 
-                               sku=sku_produto, 
-                               description=descricao, 
-                               price=preco, 
-                               regular_price=preco, 
-                               sale_price="", 
-                               sizes=tamanhos, 
-                               color=color, 
-                               images=imgs)
+
+                dados_chuteira.append(titulo_produto)
+                dados_chuteira.append(marca)
+                dados_chuteira.append(preco)
+                dados_chuteira.append(tamanhos)
+                dados_chuteira.append(color)
+                dados_chuteira.append(descricao)
 
                 # Voltar
                 self.driver.back()
@@ -453,6 +448,7 @@ class ProDirect(Browser):
                     continue
 
                 print(f'dados da {chuteira+1}° chuteira: {titulo_produto} extraídos. Page: {page}/{total_pages}\n')
+                dados.append(dados_chuteira)
 
             if chuteira+1 > total_pages:
                 print("Raspagem finalizada.")
